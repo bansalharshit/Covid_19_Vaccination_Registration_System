@@ -7,7 +7,6 @@ import com.masai.Model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-//	public User findByMobileNo(String mobileNo);
 	
+	public User findByEmail(String email);
 }

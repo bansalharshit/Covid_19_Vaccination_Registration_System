@@ -9,5 +9,7 @@ import com.masai.Model.User;
 public interface UserServices {
 	
 	public User createUser(User user) throws UserException;
+	
+	public User updateUser(User user, String key) throws UserException;
 
 }
