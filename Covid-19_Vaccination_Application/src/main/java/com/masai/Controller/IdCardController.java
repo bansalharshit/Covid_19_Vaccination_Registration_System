@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.masai.Exception.IdCardException;
@@ -30,6 +31,25 @@ public class IdCardController {
 		IDCard savedId =  idService.addIdCard(id);
 		
 		return new ResponseEntity<IDCard>(savedId,HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/id/pan")
+	public ResponseEntity<IDCard> getByPan(@RequestParam(required = true) String pan, @RequestParam(required = false) String key) throws IdCardException{
+		
+		IDCard savedID1 = idService.getIdcardByPanNo(pan, key);
+		
+		return new ResponseEntity<IDCard>(savedID1,HttpStatus.OK);
+		
+	}
+	
+	
+	@GetMapping("/id/adhar")
+	public ResponseEntity<IDCard> getByAdhar(@RequestParam(required = true) Long adharNo, @RequestParam(required = false) String key) throws IdCardException{
+		
+		IDCard savedID2 = idService.getIdCardByAdharNo(adharNo, key);
+		
+		return new ResponseEntity<IDCard>(savedID2,HttpStatus.OK);
+		
 	}
 	
 }
