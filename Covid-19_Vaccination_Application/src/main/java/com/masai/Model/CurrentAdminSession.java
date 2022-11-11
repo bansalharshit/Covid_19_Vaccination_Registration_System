@@ -1,6 +1,7 @@
 package com.masai.Model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,5 +41,6 @@ public class CurrentAdminSession {
 		this.uuid = uuid;
 		this.logInTime = logInTime;
 	}
+
 
 }

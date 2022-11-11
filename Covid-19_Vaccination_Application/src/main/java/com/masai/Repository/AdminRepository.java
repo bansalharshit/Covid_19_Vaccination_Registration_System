@@ -9,6 +9,6 @@ import com.masai.Model.User;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
-	public User findByMobileNo(String mobileNo);
+	public Admin findByMobileNo(String mobileNo);
 	
 }

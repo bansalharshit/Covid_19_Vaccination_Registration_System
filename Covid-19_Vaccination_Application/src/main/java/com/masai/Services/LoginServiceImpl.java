@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.masai.Exception.LoginException;
+import com.masai.Model.Admin;
 import com.masai.Model.AdminDto;
 import com.masai.Model.CurrentAdminSession;
 import com.masai.Model.CurrentUserSession;
@@ -87,7 +88,7 @@ public class LoginServiceImpl implements LoginServices{
 	@Override
 	public String logInToAdminAccount(AdminDto adto) throws LoginException {
 
-		User existingAdmin = 
+		Admin existingAdmin = 
 				adminRepo.findByMobileNo(adto.getMobileNo());
 		
 		if(existingAdmin == null) {
