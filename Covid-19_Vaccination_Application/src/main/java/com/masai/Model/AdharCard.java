@@ -30,7 +30,6 @@ public class AdharCard {
 
 	public AdharCard() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public AdharCard(long adharNo) {
