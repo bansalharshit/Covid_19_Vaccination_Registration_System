@@ -1,1 +1,1 @@
-# Covid-19 Vaccination Application Using REST Api.
+# Covid-19 Vaccination Registration Using REST Api.
