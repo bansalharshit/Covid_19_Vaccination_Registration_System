@@ -38,8 +38,7 @@ public class LoginServiceImpl implements LoginServices{
 	@Override
 	public String logInToUserAccount(UserDto udto) throws LoginException {
 		
-		User existingUser = 
-				userRepo.findByMobileNo(udto.getMobileNo());
+		User existingUser = userRepo.findByMobileNo(udto.getMobileNo());
 		
 		if(existingUser == null) {
 			throw new LoginException("No User Found with this Mobile Number !");
@@ -75,11 +74,11 @@ public class LoginServiceImpl implements LoginServices{
 	@Override
 	public String logOutFromUserAccount(String key) throws LoginException {
 		
-		CurrentUserSession validUserSession =  userSession.findByUuid(key);
+		Optional<CurrentUserSession> validUserSession =  userSession.findByUuid(key);
 		
-		if(validUserSession !=null) {
-			userSession.delete(validUserSession);
-			return validUserSession.getUserId()+"User Logged Out !";
+		if(!validUserSession.isPresent()) {
+			userSession.delete(validUserSession.get());
+			return validUserSession.get().getUserId()+"User Logged Out !";
 		}
 		
 		throw new LoginException("User Not Logged In with this number");
@@ -88,16 +87,15 @@ public class LoginServiceImpl implements LoginServices{
 	@Override
 	public String logInToAdminAccount(AdminDto adto) throws LoginException {
 
-		Admin existingAdmin = 
-				adminRepo.findByMobileNo(adto.getMobileNo());
-		
-		if(existingAdmin == null) {
-			throw new LoginException("No Admin Found with this Mobile Number !");
-		}
+		Admin existingAdmin = 	adminRepo.findByMobileNo(adto.getMobileNo());
 		
 		Optional<CurrentAdminSession> validAdminSessionOpt = adminSession.findByAdminId(existingAdmin.getId());
 		
+		if(existingAdmin == null || !existingAdmin.getPassword().equals(adto.getPassword())) {
+			throw new LoginException("No Admin Found with this Mobile Number or password is incorrect... !");
+		}
 		
+	
 		if(validAdminSessionOpt.isPresent()) {
 			throw new LoginException("Admin is Already logged In with this Number !");
 		}
@@ -124,11 +122,11 @@ public class LoginServiceImpl implements LoginServices{
 	@Override
 	public String logOutFromAdminAccount(String key) throws LoginException {
 		
-		CurrentAdminSession validAdminSession =  adminSession.findByUuid(key);
+		Optional<CurrentAdminSession> validAdminSession =  adminSession.findByUuid(key);
 		
-		if(validAdminSession !=null) {
-			adminSession.delete(validAdminSession);
-			return validAdminSession.getAdminId()+" Admin Logged Out !";
+		if(!validAdminSession.isPresent()) {
+			adminSession.delete(validAdminSession.get());
+			return validAdminSession.get().getAdminId()+" Admin Logged Out !";
 		}
 		
 		throw new LoginException("Admin Not Logged In with this number");

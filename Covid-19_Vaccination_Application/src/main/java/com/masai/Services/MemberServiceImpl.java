@@ -53,13 +53,19 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	UserSessionRepository userRepo;
-
+	
 	@Override
-	public Member addMemberbyMobileNo(Member member, String mobileNo,String key) throws MemberException {
-		
+	public Member addMemberbyMobileNo(AdharCard aadhar, String mobileNo, String key) throws MemberException {
 		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
+		 IDCard idcard1 =idCardRepo.findByAdharcard(aadhar);
+		 
+		 if(idcard1==null) {
+			 throw new MemberException("No user found with adhar ! "+aadhar);
+		 }
+		 
+		 Member member = idcard1.getMember();
 			
-			if(currUser != null) {
+			if(currUser == null) {
 				
 				throw new MemberException("Cannot Access This Method !");
 			}
@@ -322,5 +328,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new MemberException("Member not found with the MEMBER ID :" + member.getMemberid());
 
 	}
+
+	
 
 }

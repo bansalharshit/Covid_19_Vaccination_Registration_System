@@ -22,7 +22,7 @@ public class LogInController {
 	@Autowired
 	private LoginServices login;
 	
-	@PostMapping("/user/login/")
+	@PostMapping("/user/login")
 	public ResponseEntity<String> logInUser(@Valid @RequestBody UserDto udto) throws LoginException {
 		
 		String result = login.logInToUserAccount(udto);
@@ -38,7 +38,7 @@ public class LogInController {
 		
 	}
 	
-	@PostMapping("/admin/login/")
+	@PostMapping("/admin/login")
 	public ResponseEntity<String> logInAdmin(@Valid @RequestBody AdminDto adto) throws LoginException {
 		
 		String result = login.logInToAdminAccount(adto);

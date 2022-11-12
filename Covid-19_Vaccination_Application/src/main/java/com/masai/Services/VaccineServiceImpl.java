@@ -18,7 +18,6 @@ import com.masai.Repository.VaccineRepository;
 
 
 @Service
-
 public class VaccineServiceImpl implements VaccineService {
 
 

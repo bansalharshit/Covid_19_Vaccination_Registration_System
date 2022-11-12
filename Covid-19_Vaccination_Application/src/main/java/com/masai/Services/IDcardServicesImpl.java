@@ -1,5 +1,7 @@
 package com.masai.Services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +35,9 @@ public class IDcardServicesImpl implements IDcardServices {
 
 	@Override
 	public IDCard getIdcardByPanNo(String panNo, String key) throws IdCardException {
-		CurrentAdminSession optCurrAdmin= adminRepo.findByUuid(key);
+		Optional<CurrentAdminSession> optCurrAdmin= adminRepo.findByUuid(key);
 		
-		if(optCurrAdmin != null){
+		if(!optCurrAdmin.isPresent()){
 			
 			throw new IdCardException("User Not Found !");
 			
@@ -51,9 +53,9 @@ public class IDcardServicesImpl implements IDcardServices {
 	@Override
 	public IDCard getIdCardByAdharNo(Long adharno, String key) throws IdCardException {
 		
-		CurrentAdminSession CurrentAdmin= adminRepo.findByUuid(key);
+		Optional<CurrentAdminSession> CurrentAdmin= adminRepo.findByUuid(key);
 		
-		if(CurrentAdmin != null) {
+		if(!CurrentAdmin.isPresent()) {
 			
 			throw new IdCardException("User Not Found !");
 		}

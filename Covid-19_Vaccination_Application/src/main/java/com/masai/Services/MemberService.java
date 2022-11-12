@@ -1,6 +1,9 @@
 package com.masai.Services;
 
+import org.springframework.core.annotation.MergedAnnotation.Adapt;
+
 import com.masai.Exception.MemberException;
+import com.masai.Model.AdharCard;
 import com.masai.Model.Member;
 
 public interface MemberService {
@@ -20,6 +23,6 @@ public interface MemberService {
 
 	public Member updatedoseStatus(Member member, Integer mid,String key) throws MemberException;
 
-	public Member addMemberbyMobileNo(Member member, String mobileNo,String key) throws MemberException;
+	public Member addMemberbyMobileNo(AdharCard aadhar, String mobileNo,String key) throws MemberException;
 	
 }
