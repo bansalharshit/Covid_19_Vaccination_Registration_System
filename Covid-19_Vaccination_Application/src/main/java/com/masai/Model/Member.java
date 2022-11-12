@@ -33,8 +33,7 @@ public class Member {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer memberid;
-	
+	private Integer memberid;	
 	
 	private Boolean dose1status;
 	private Boolean dose2status;
