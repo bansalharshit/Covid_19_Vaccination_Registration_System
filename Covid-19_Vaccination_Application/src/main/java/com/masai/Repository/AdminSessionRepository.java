@@ -8,7 +8,7 @@ import com.masai.Model.CurrentAdminSession;
 
 public interface AdminSessionRepository extends JpaRepository<CurrentAdminSession, Integer> {
 
-	public CurrentAdminSession findByUuid(String uuid);
+	public Optional<CurrentAdminSession> findByUuid(String uuid);
 	
 	public Optional<CurrentAdminSession> findByAdminId(Integer adminId); 
 }
