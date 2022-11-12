@@ -8,14 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
-@Data
-@Getter
-@Setter
 public class CurrentUserSession {
 
 	
@@ -40,5 +33,47 @@ public class CurrentUserSession {
 		this.uuid = uuid;
 		this.logInTime = logInTime;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public LocalDateTime getLogInTime() {
+		return logInTime;
+	}
+
+	public void setLogInTime(LocalDateTime logInTime) {
+		this.logInTime = logInTime;
+	}
+
+	@Override
+	public String toString() {
+		return "CurrentUserSession [id=" + id + ", userId=" + userId + ", uuid=" + uuid + ", logInTime=" + logInTime
+				+ "]";
+	}
+	
+	
+	
+	
 
 }
