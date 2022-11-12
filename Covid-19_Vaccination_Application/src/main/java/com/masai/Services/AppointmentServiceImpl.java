@@ -1,5 +1,6 @@
 package com.masai.Services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -13,220 +14,148 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import com.masai.Exception.AppointmentException;
+import com.masai.Exception.MemberException;
+import com.masai.Exception.VaccineCentreException;
+import com.masai.Exception.VaccineRegistrationException;
 import com.masai.Model.Appointment;
+import com.masai.Model.CurrentAdminSession;
+import com.masai.Model.CurrentUserSession;
+import com.masai.Model.Member;
+import com.masai.Model.VaccinationCenter;
+import com.masai.Model.VaccineRegistration;
+import com.masai.Repository.AdminSessionRepository;
 import com.masai.Repository.AppointmentRepo;
+import com.masai.Repository.UserSessionRepository;
+
+
+
+
+
+
+
+
+
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
-	@Override
-	public List<Appointment> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired
+	private AppointmentRepo appointmentDao;
 
-	@Override
-	public List<Appointment> findAll(Sort sort) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired
+	private VaccineRegistrationService registrationService;
 
-	@Override
-	public List<Appointment> findAllById(Iterable<Integer> ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired
+	private MemberService memberService;
 
-	@Override
-	public <S extends Appointment> List<S> saveAll(Iterable<S> entities) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void flush() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public <S extends Appointment> S saveAndFlush(S entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Appointment> List<S> saveAllAndFlush(Iterable<S> entities) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteAllInBatch(Iterable<Appointment> entities) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAllByIdInBatch(Iterable<Integer> ids) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAllInBatch() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Appointment getOne(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Appointment getById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Appointment getReferenceById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Appointment> List<S> findAll(Example<S> example) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Appointment> List<S> findAll(Example<S> example, Sort sort) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Page<Appointment> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Appointment> S save(S entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<Appointment> findById(Integer id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-
-	@Override
-	public boolean existsById(Integer id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Appointment entity) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAllById(Iterable<? extends Integer> ids) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAll(Iterable<? extends Appointment> entities) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAll() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public <S extends Appointment> Optional<S> findOne(Example<S> example) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-
-	@Override
-	public <S extends Appointment> Page<S> findAll(Example<S> example, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Appointment> long count(Example<S> example) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public <S extends Appointment> boolean exists(Example<S> example) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public <S extends Appointment, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@Autowired
+	private VaccinationCenterService vaccinationCenterService;
+	
+	@Autowired
+	private AdminSessionRepository adminSessionDAO;
+	
+	@Autowired
+	private UserSessionRepository userSessionDAO;
+	
+	
 	@Override
 	public List<Appointment> getAllAppointment(String key) throws AppointmentException {
-		// TODO Auto-generated method stub
-		return null;
+		 Optional<CurrentAdminSession> optCurrAdmin= adminSessionDAO.findByUuid(key);
+			
+			if(!optCurrAdmin.isPresent()) {
+				
+				throw new AppointmentException("Unauthorised access");
+			}
+			
+		List<Appointment> appointments = appointmentDao.findAll();
+		if (appointments.size() > 0)
+			return appointments;
+		else
+			throw new AppointmentException("No appointment found");
 	}
 
 	@Override
 	public Appointment getAppointmentByBookingId(Long bookingId, String key) throws AppointmentException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<CurrentAdminSession> optCurrAdmin= adminSessionDAO.findByUuid(key);
+		 Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);
+			
+			if(!optCurrAdmin.isPresent()&&!optCurrUser.isPresent()) {
+				
+				throw new RuntimeException("Unauthorised access");
+			}
+			
+			
+		return appointmentDao.findById(bookingId)
+				.orElseThrow(() -> new AppointmentException("Appointment not found by same booking id!"));
 	}
 
 	@Override
-	public Appointment addAppointment(Appointment app, Integer memId, String key) throws AppointmentException {
-		// TODO Auto-generated method stub
-		return null;
+	public Appointment addAppointment(Appointment appointment, Integer memberId, String key)
+			throws AppointmentException, VaccineCentreException, VaccineRegistrationException, MemberException {
+		 Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);
+			
+			if(!optCurrUser.isPresent()) {
+				
+				throw new RuntimeException("Unauthorised access");
+			}
+	
+
+		VaccineRegistration reg = registrationService.getVaccineRegistration(appointment.getMobileNo(),key);
+		if (reg == null)
+			throw new AppointmentException("First do the registration...");
+		else {
+			List<Member> list = reg.getMembers();
+			for (Member m : list) {
+				if (m.getMemberid() == memberId) {
+					appointment.setMember(m);
+					appointment.setDateofbooking(LocalDate.now());
+					appointment.setBookingStatus(true);
+					Integer id = appointment.getVaccinationCenter().getCode();
+					VaccinationCenter vaccinationCenter = vaccinationCenterService.getVaccineCenter(id,key);
+					appointment.setVaccinationCenter(vaccinationCenter);
+					Appointment a = appointmentDao.save(appointment);
+					m.getAppointments().add(a);
+					memberService.updateMember(m, m.getMemberid(),key);
+					return a;
+				}
+			}
+			throw new AppointmentException("Member not found...");
+		}
 	}
 
 	@Override
-	public Appointment updateAppointment(Appointment app, String key) throws AppointmentException {
-		// TODO Auto-generated method stub
-		return null;
+	public Appointment updateAppointment(Appointment appointment, String key) throws AppointmentException {
+		Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);
+		
+		if(!optCurrUser.isPresent()) {
+			
+			throw new RuntimeException("Unauthorised access");
+		}
+		
+	Appointment app = appointmentDao.findById(appointment.getBookingId())
+			.orElseThrow(() -> new AppointmentException("Appointment not found!"));
+
+	app.setDateofbooking(appointment.getDateofbooking());
+	app.setVaccinationCenter(appointment.getVaccinationCenter());
+	app.setSlot(appointment.getSlot());
+	return appointmentDao.save(app);
 	}
 
 	@Override
 	public boolean deleteAppointment(Long bookingId, String key) throws AppointmentException {
-		// TODO Auto-generated method stub
-		return false;
+		 Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);
+			
+			if(!optCurrUser.isPresent()) {
+				
+				throw new AppointmentException("Unauthorised access");
+			}
+			
+		Appointment ExitApp = appointmentDao.findById(bookingId)
+				.orElseThrow(() -> new AppointmentException("Appointment not found!"));
+		appointmentDao.delete(ExitApp);
+		return true;
 	}
+
+	
 
 }

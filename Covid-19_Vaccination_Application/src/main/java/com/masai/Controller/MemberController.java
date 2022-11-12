@@ -33,11 +33,11 @@ public class MemberController {
     private AppointmentService appointmentService;
 
 
-    @GetMapping("/appointments")
-    public ResponseEntity<List<Appointment>> getVaccineAllAppointment(@RequestParam String key) throws AppointmentException {
-    	 List<Appointment> appts = appointmentService.allAppointment();
-        return new ResponseEntity<List<Appointment>>(appts, HttpStatus.FOUND);
-    }
+//    @GetMapping("/appointments")
+//    public ResponseEntity<List<Appointment>> getVaccineAllAppointment(@RequestParam String key) throws AppointmentException {
+//    	 List<Appointment> appts = appointmentService.getAllAppointment();
+//        return new ResponseEntity<List<Appointment>>(appts, HttpStatus.FOUND);
+//    }
 
     // member
     @PutMapping("/dose/{memId}")

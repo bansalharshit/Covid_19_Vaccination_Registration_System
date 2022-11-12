@@ -57,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member addMemberbyMobileNo(Member member, String mobileNo,String key) throws MemberException {
 		
-		 CurrentUserSession currUser= userRepo.findByUuid(key);
+		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
 			
 			if(currUser != null) {
 				
@@ -86,8 +86,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member updateMember(Member member, Integer mid,String key) throws MemberException {
 	
-		 CurrentAdminSession currAdmin= adminRepo.findByUuid(key);
-		 CurrentUserSession currUser= userRepo.findByUuid(key);
+		 Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
+		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
 			
 			if(currAdmin != null&&currUser !=null) {
 				
@@ -133,8 +133,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member getMemberById(Integer idcardid,String key) throws MemberException {
 		
-		 CurrentAdminSession currAdmin= adminRepo.findByUuid(key);
-		 CurrentUserSession currUser= userRepo.findByUuid(key);
+		 Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
+		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
 			
 			if(currAdmin != null && currUser != null) {
 				
@@ -160,7 +160,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean deleteMember(Integer mid,String key) throws MemberException {
 		
-		 CurrentUserSession currUser = userRepo.findByUuid(key);
+		 Optional<CurrentUserSession> currUser = userRepo.findByUuid(key);
 			
 			if(currUser != null) {
 				throw new MemberException("Register Member First !");
@@ -187,7 +187,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member getMemberByPanNo(String panNo,String key) throws MemberException {
 	
-		 CurrentAdminSession currAdmin = adminRepo.findByUuid(key);
+		 Optional<CurrentAdminSession> currAdmin = adminRepo.findByUuid(key);
 			
 			if(currAdmin != null) {
 				
@@ -212,7 +212,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean deleteMemberRecord(Member member,String key) throws MemberException {
 		
-		 CurrentAdminSession currAdmin = adminRepo.findByUuid(key);
+		 Optional<CurrentAdminSession> currAdmin = adminRepo.findByUuid(key);
 			
 			if(currAdmin != null) {
 				
@@ -232,7 +232,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member getMemberByAdharNo(Long adharNo,String key) throws MemberException {
 		 
-		CurrentAdminSession currAdmin= adminRepo.findByUuid(key);
+		Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
 			
 			if(currAdmin != null) {
 				
@@ -257,7 +257,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member updatedoseStatus(Member member, Integer mid,String key) throws MemberException {
 		
-		 CurrentAdminSession optCurrAdmin= adminRepo.findByUuid(key);
+		 Optional<CurrentAdminSession> optCurrAdmin= adminRepo.findByUuid(key);
 			
 			if(optCurrAdmin!=null) {
 				

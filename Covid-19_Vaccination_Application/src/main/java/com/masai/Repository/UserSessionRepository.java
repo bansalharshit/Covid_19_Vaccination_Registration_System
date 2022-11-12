@@ -10,7 +10,7 @@ import com.masai.Model.CurrentUserSession;
 @Repository
 public interface UserSessionRepository extends JpaRepository<CurrentUserSession, Integer> {
 
-	public CurrentUserSession findByUuid(String uuid);
+	public Optional<CurrentUserSession> findByUuid(String uuid);
 	
 	public Optional<CurrentUserSession> findByUserId(Integer userId); 
 }
