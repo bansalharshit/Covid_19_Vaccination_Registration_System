@@ -46,16 +46,16 @@ public class UserController {
 		return new ResponseEntity<Appointment>(a, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/appointment/{id}")
-	public ResponseEntity<Appointment> getAppointment(@PathVariable("id") Long bookingId,@RequestParam String key) throws AppointmentException {
-		return new ResponseEntity<Appointment>(aService.getAppointmentByBookingId(bookingId,key),
-				HttpStatus.FOUND);
-	}
+//	@GetMapping("/appointment/{id}")
+//	public ResponseEntity<Appointment> getAppointment(@PathVariable("id") Long bookingId,@RequestParam String key) throws AppointmentException {
+//		return new ResponseEntity<Appointment>(aService.getAppointmentByBookingId(bookingId,key),
+//				HttpStatus.FOUND);
+//	}
 
-	@PutMapping("/appointment")
-	public ResponseEntity<Appointment> updateVaccineAppointment(@RequestBody Appointment app,@RequestParam String key) throws AppointmentException {
-		return new ResponseEntity<Appointment>(aService.updateAppointment(app,key), HttpStatus.OK);
-	}
+//	@PutMapping("/appointment")
+//	public ResponseEntity<Appointment> updateVaccineAppointment(@RequestBody Appointment app,@RequestParam String key) throws AppointmentException {
+//		return new ResponseEntity<Appointment>(aService.updateAppointment(app,key), HttpStatus.OK);
+//	}
 
 	@DeleteMapping("/appointment/{id}")
 	public ResponseEntity<Boolean> deleteVaccineAppointment(@PathVariable("id") Long bookingId,@RequestParam String key) throws AppointmentException {

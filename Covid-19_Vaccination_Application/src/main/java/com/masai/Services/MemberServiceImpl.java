@@ -27,6 +27,7 @@ import com.masai.Repository.VaccineCountRepository;
 import com.masai.Repository.VaccineRegistrationRepository;
 import com.masai.Repository.VaccineRepository;
 
+
 @Service
 public class MemberServiceImpl implements MemberService {
 	
@@ -55,25 +56,20 @@ public class MemberServiceImpl implements MemberService {
 	UserSessionRepository userRepo;
 	
 	@Override
-	public Member addMemberbyMobileNo(AdharCard aadhar, String mobileNo, String key) throws MemberException {
-		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
-		 IDCard idcard1 =idCardRepo.findByAdharcard(aadhar);
-		 
-		 if(idcard1==null) {
-			 throw new MemberException("No user found with adhar ! "+aadhar);
-		 }
-		 
-		 Member member = idcard1.getMember();
-			
-			if(currUser == null) {
-				
-				throw new MemberException("Cannot Access This Method !");
-			}
-
-		Optional<VaccineRegistration> vacc = vaccineRegisterRepo.findById(mobileNo);
+	public Member addMemberbyMobileNo(Addhar addhar, String mobileNo,String key) throws MemberException {
 		
+		 Optional<CurrentUserSession> optCurrUser= userRepo.findByUuid(key);
+			
+			if(!optCurrUser.isPresent()) {
+				
+				throw new RuntimeException("Unauthorised access");
+			}
+	
+		
+		
+		Optional<VaccineRegistration> vacc = vaccineRegisterRepo.findById(mobileNo);
 		if (vacc.isPresent()) {
-					IDCard idcard = idCardRepo.findByAdharcard(member.getIdCard().getAdharcard());
+			IDCard idcard = idCardRepo.findByAdharcard(member.getIdCard().getAdharcard());
 			if (idcard == null)
 
 			{
@@ -84,181 +80,136 @@ public class MemberServiceImpl implements MemberService {
 				member.setDose2status(false);
 				return memberRepo.save(member);
 			} else
-				throw new MemberException("You have already signed up. Please Login !");
+				throw new MemberException("Member is already present");
 		} else
-			throw new MemberException("MEMBER IS NOT REGISTERED:" + mobileNo);
+			throw new MemberException("This MOBILE NUMBER is NOT REGISTERED:" + mobileNo);
 	}
 
-	@Override
-	public Member updateMember(Member member, Integer mid,String key) throws MemberException {
 	
-		 Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
-		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
-			
-			if(currAdmin != null&&currUser !=null) {
-				
-				throw new MemberException("ADMIN AREA ONLY.");
-			}
-			
-		
-		Optional<Member> memberId = memberRepo.findById(mid);
-		
-		if (memberId.isPresent()) {
-			
-			Member existingMember = memberId.get();
-			
-			if (member.getIdCard() != null) {
-				IDCard id = existingMember.getIdCard();
-				if (member.getIdCard().getDob() != null)
-					id.setDob(member.getIdCard().getDob());
-				if (member.getIdCard().getCity() != null)
-					id.setCity(member.getIdCard().getCity());
-				
-				if (member.getIdCard().getAddress() != null)
-					id.setAddress(member.getIdCard().getAddress());
-				if (member.getIdCard().getPincode() != null)
-					id.setPincode(member.getIdCard().getPincode());
-				if (member.getIdCard().getState() != null)
-					id.setState(member.getIdCard().getState());
 
-				if (member.getIdCard().getAdharcard() != null) {
-					AdharCard adharCard = existingMember.getIdCard().getAdharcard();
-					adharCard.setAdharNo(member.getIdCard().getAdharcard().getAdharNo());
-				}
+//	@Override
+//	public Member getMemberById(Integer idcardid,String key) throws MemberException {
+//		
+//		 Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
+//		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
+//			
+//			if(currAdmin != null && currUser != null) {
+//				
+//				throw new MemberException("YOU CANT ACCESS THIS APP");
+//			}
+//			
+//		
+//		Optional<IDCard> idcard = idCardRepo.findById(idcardid);
+//		
+//		if (idcard != null) {
+//			Member memberbyId = memberRepo.findByIdCard(idcard);
+//			if (memberbyId != null) {
+//				List<Appointment> appointment = appointRepo.findByMember(memberbyId);
+//				
+//				memberbyId.setAppointments(appointment);
+//				return memberbyId;
+//			} else
+//				throw new MemberException("Member is not Registered with these IDCARD ID:" + idcardid);
+//		} else
+//			throw new MemberException("First Register Member with IDCARD ID:" + idcardid);
+//	}
 
-				if (member.getIdCard().getPancard() != null) {
-					Pancard panCard = existingMember.getIdCard().getPancard();
-					panCard.setPanNo(member.getIdCard().getPancard().getPanNo());
-				}
-			}
-			return memberRepo.save(existingMember);
-		} else
-			throw new MemberException("No MEMBER  Registered with these ID :" + member.getMemberid());
-	}
+//	@Override
+//	public boolean deleteMember(Integer mid,String key) throws MemberException {
+//		
+//		 Optional<CurrentUserSession> currUser = userRepo.findByUuid(key);
+//			
+//			if(currUser != null) {
+//				throw new MemberException("Register Member First !");
+//			}
+//	
+//		
+//		Optional<Member> memberId = memberRepo.findById(mid);
+//		
+//		
+//		if (memberId.isPresent()) {
+//			Member existingMember = memberId.get();
+//			if (existingMember.getVaccineRegistration() != null)
+//				vaccineRegisterRepo.delete(existingMember.getVaccineRegistration());
+//			if (existingMember.getIdCard() != null)
+//				idCardRepo.delete(existingMember.getIdCard());
+//			if (existingMember.getAppointments() != null)
+//				appointRepo.deleteAll(existingMember.getAppointments());
+//			memberRepo.delete(existingMember);
+//			return true;
+//		} else
+//			throw new MemberException("Member Is Not Registered :" + mid);
+//	}
+//
+//	@Override
+//	public Member getMemberByPanNo(String panNo,String key) throws MemberException {
+//	
+//		 Optional<CurrentAdminSession> currAdmin = adminRepo.findByUuid(key);
+//			
+//			if(currAdmin != null) {
+//				
+//				throw new MemberException("Register Your Member First !");
+//			}
+//		
+//		IDCard idcard = idCardRepo.findByPancard(new Pancard(panNo));
+//		
+//		
+//		if (idcard != null) {
+//			Optional<IDCard> id = idCardRepo.findById(idcard.getId());
+//			Member memberbyId = memberRepo.findByIdCard(id);
+//			
+//			if (memberbyId != null)
+//				return memberbyId;
+//			else
+//				throw new MemberException("Member is not registered with this PAN NUMBER : " + panNo);
+//		} else
+//			throw new MemberException("Member is not Registered With PAN : " + panNo);
+//	}
 
-	@Override
-	public Member getMemberById(Integer idcardid,String key) throws MemberException {
-		
-		 Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
-		 Optional<CurrentUserSession> currUser= userRepo.findByUuid(key);
-			
-			if(currAdmin != null && currUser != null) {
-				
-				throw new MemberException("YOU CANT ACCESS THIS APP");
-			}
-			
-		
-		Optional<IDCard> idcard = idCardRepo.findById(idcardid);
-		
-		if (idcard != null) {
-			Member memberbyId = memberRepo.findByIdCard(idcard);
-			if (memberbyId != null) {
-				List<Appointment> appointment = appointRepo.findByMember(memberbyId);
-				
-				memberbyId.setAppointments(appointment);
-				return memberbyId;
-			} else
-				throw new MemberException("Member is not Registered with these IDCARD ID:" + idcardid);
-		} else
-			throw new MemberException("First Register Member with IDCARD ID:" + idcardid);
-	}
+//	@Override
+//	public boolean deleteMemberRecord(Member member,String key) throws MemberException {
+//		
+//		 Optional<CurrentAdminSession> currAdmin = adminRepo.findByUuid(key);
+//			
+//			if(currAdmin != null) {
+//				
+//				throw new MemberException("Register Your Member First !");
+//			}
+//		
+//		
+//		Optional<Member> memberId = memberRepo.findById(member.getMemberid());
+//		
+//		if (memberId.isPresent()) {
+//			memberRepo.delete(member);
+//			return true;
+//		} else
+//			throw new MemberException("MEMBER ID not found:" + member.getMemberid());
+//	}
 
-	@Override
-	public boolean deleteMember(Integer mid,String key) throws MemberException {
-		
-		 Optional<CurrentUserSession> currUser = userRepo.findByUuid(key);
-			
-			if(currUser != null) {
-				throw new MemberException("Register Member First !");
-			}
-	
-		
-		Optional<Member> memberId = memberRepo.findById(mid);
-		
-		
-		if (memberId.isPresent()) {
-			Member existingMember = memberId.get();
-			if (existingMember.getVaccineRegistration() != null)
-				vaccineRegisterRepo.delete(existingMember.getVaccineRegistration());
-			if (existingMember.getIdCard() != null)
-				idCardRepo.delete(existingMember.getIdCard());
-			if (existingMember.getAppointments() != null)
-				appointRepo.deleteAll(existingMember.getAppointments());
-			memberRepo.delete(existingMember);
-			return true;
-		} else
-			throw new MemberException("Member Is Not Registered :" + mid);
-	}
-
-	@Override
-	public Member getMemberByPanNo(String panNo,String key) throws MemberException {
-	
-		 Optional<CurrentAdminSession> currAdmin = adminRepo.findByUuid(key);
-			
-			if(currAdmin != null) {
-				
-				throw new MemberException("Register Your Member First !");
-			}
-		
-		IDCard idcard = idCardRepo.findByPancard(new Pancard(panNo));
-		
-		
-		if (idcard != null) {
-			Optional<IDCard> id = idCardRepo.findById(idcard.getId());
-			Member memberbyId = memberRepo.findByIdCard(id);
-			
-			if (memberbyId != null)
-				return memberbyId;
-			else
-				throw new MemberException("Member is not registered with this PAN NUMBER : " + panNo);
-		} else
-			throw new MemberException("Member is not Registered With PAN : " + panNo);
-	}
-
-	@Override
-	public boolean deleteMemberRecord(Member member,String key) throws MemberException {
-		
-		 Optional<CurrentAdminSession> currAdmin = adminRepo.findByUuid(key);
-			
-			if(currAdmin != null) {
-				
-				throw new MemberException("Register Your Member First !");
-			}
-		
-		
-		Optional<Member> memberId = memberRepo.findById(member.getMemberid());
-		
-		if (memberId.isPresent()) {
-			memberRepo.delete(member);
-			return true;
-		} else
-			throw new MemberException("MEMBER ID not found:" + member.getMemberid());
-	}
-
-	@Override
-	public Member getMemberByAdharNo(Long adharNo,String key) throws MemberException {
-		 
-		Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
-			
-			if(currAdmin != null) {
-				
-				throw new MemberException("Register Your Member First !");
-			}
-		
-		 IDCard idcard = idCardRepo.findByAdharcard(new AdharCard(adharNo));
-		
-		Optional<IDCard> newIdcard = idCardRepo.findById(idcard.getId());
-		
-		if (newIdcard != null) {
-			Member mbyId = memberRepo.findByIdCard(newIdcard);
-			if (mbyId != null)
-				return mbyId;
-			else
-				throw new MemberException("Member with ADHAR NUMBER : " + adharNo+" Not Found !");
-		} else
-			throw new MemberException("First Register Member with ADHAR NUMBER : " + adharNo);
-
-	}
+//	@Override
+//	public Member getMemberByAdharNo(Long adharNo,String key) throws MemberException {
+//		 
+//		Optional<CurrentAdminSession> currAdmin= adminRepo.findByUuid(key);
+//			
+//			if(currAdmin != null) {
+//				
+//				throw new MemberException("Register Your Member First !");
+//			}
+//		
+//		 IDCard idcard = idCardRepo.findByAdharcard(new AdharCard(adharNo));
+//		
+//		Optional<IDCard> newIdcard = idCardRepo.findById(idcard.getId());
+//		
+//		if (newIdcard != null) {
+//			Member mbyId = memberRepo.findByIdCard(newIdcard);
+//			if (mbyId != null)
+//				return mbyId;
+//			else
+//				throw new MemberException("Member with ADHAR NUMBER : " + adharNo+" Not Found !");
+//		} else
+//			throw new MemberException("First Register Member with ADHAR NUMBER : " + adharNo);
+//
+//	}
 
 	@Override
 	public Member updatedoseStatus(Member member, Integer mid,String key) throws MemberException {
@@ -327,6 +278,51 @@ public class MemberServiceImpl implements MemberService {
 		} else
 			throw new MemberException("Member not found with the MEMBER ID :" + member.getMemberid());
 
+	}
+
+
+
+	@Override
+	public Member updateMember(Member member, Integer mid, String key) throws MemberException {
+		 Optional<CurrentAdminSession> optCurrAdmin= adminRepo.findByUuid(key);
+		 Optional<CurrentUserSession> optCurrUser= userRepo.findByUuid(key);
+			
+			if(!optCurrAdmin.isPresent()&&!optCurrUser.isPresent()) {
+				
+				throw new RuntimeException("Unauthorised access");
+			}
+			
+		
+		Optional<Member> mId = memberRepo.findById(mid);
+		if (mId.isPresent()) {
+			Member exist = mId.get();
+			if (member.getIdCard() != null) {
+				IDCard id = exist.getIdCard();
+				if (member.getIdCard().getDob() != null)
+					id.setDob(member.getIdCard().getDob());
+				if (member.getIdCard().getCity() != null)
+					id.setCity(member.getIdCard().getCity());
+				
+				if (member.getIdCard().getAddress() != null)
+					id.setAddress(member.getIdCard().getAddress());
+				if (member.getIdCard().getPincode() != null)
+					id.setPincode(member.getIdCard().getPincode());
+				if (member.getIdCard().getState() != null)
+					id.setState(member.getIdCard().getState());
+
+				if (member.getIdCard().getAdharcard() != null) {
+					AdharCard adar = exist.getIdCard().getAdharcard();
+					adar.setAdharNo(member.getIdCard().getAdharcard().getAdharNo());
+				}
+
+				if (member.getIdCard().getPancard() != null) {
+					Pancard pan = exist.getIdCard().getPancard();
+					pan.setPanNo(member.getIdCard().getPancard().getPanNo());
+				}
+			}
+			return memberRepo.save(exist);
+		} else
+			throw new MemberException("Member not found with the MEMBER ID :" + member.getMemberid());
 	}
 
 	

@@ -60,20 +60,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 			throw new AppointmentException("No appointment found");
 	}
 
-	@Override
-	public Appointment getAppointmentByBookingId(Long bookingId, String key) throws AppointmentException {
-		Optional<CurrentAdminSession> optCurrAdmin= adminSessionDAO.findByUuid(key);
-		 Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);
-			
-			if(!optCurrAdmin.isPresent()&&!optCurrUser.isPresent()) {
-				
-				throw new RuntimeException("Unauthorised access");
-			}
-			
-			
-		return appointmentDao.findById(bookingId)
-				.orElseThrow(() -> new AppointmentException("Appointment not found by same booking id!"));
-	}
+	
 
 	@Override
 	public Appointment addAppointment(Appointment appointment, Integer memberId, String key)
@@ -109,24 +96,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		}
 	}
 
-	@Override
-	public Appointment updateAppointment(Appointment appointment, String key) throws AppointmentException {
-		Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);
-		
-		if(!optCurrUser.isPresent()) {
-			
-			throw new RuntimeException("Unauthorised access");
-		}
-		
-	Appointment app = appointmentDao.findById(appointment.getBookingId())
-			.orElseThrow(() -> new AppointmentException("Appointment not found!"));
-
-	app.setDateofbooking(appointment.getDateofbooking());
-	app.setVaccinationCenter(appointment.getVaccinationCenter());
-	app.setSlot(appointment.getSlot());
-	return appointmentDao.save(app);
-	}
-
+	
 	@Override
 	public boolean deleteAppointment(Long bookingId, String key) throws AppointmentException {
 		 Optional<CurrentUserSession> optCurrUser= userSessionDAO.findByUuid(key);

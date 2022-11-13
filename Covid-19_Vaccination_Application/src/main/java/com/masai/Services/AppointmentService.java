@@ -14,12 +14,11 @@ public interface AppointmentService{
 	
 	public List<Appointment> getAllAppointment(String key)throws AppointmentException;
 
-	public Appointment getAppointmentByBookingId(Long bookingId,String key)throws AppointmentException;
+	
 
 	public Appointment addAppointment(Appointment appointment, Integer memberId,String key)throws AppointmentException, VaccineCentreException, VaccineRegistrationException, MemberException;
 
-	public Appointment updateAppointment(Appointment appointment,String key)throws AppointmentException;
-
+	
 	public boolean deleteAppointment(Long bookingId,String key)throws AppointmentException;
 	
 }

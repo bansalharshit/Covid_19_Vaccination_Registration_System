@@ -76,9 +76,11 @@ public class LoginServiceImpl implements LoginServices{
 		
 		Optional<CurrentUserSession> validUserSession =  userSession.findByUuid(key);
 		
-		if(!validUserSession.isPresent()) {
-			userSession.delete(validUserSession.get());
-			return validUserSession.get().getUserId()+"User Logged Out !";
+		if(validUserSession.isPresent()) {
+			CurrentUserSession cus=(validUserSession.get());
+					userSession.delete(cus);
+			return cus.getUserId()+" User Logged Out Successfully !";
+			
 		}
 		
 		throw new LoginException("User Not Logged In with this number");
@@ -124,12 +126,13 @@ public class LoginServiceImpl implements LoginServices{
 		
 		Optional<CurrentAdminSession> validAdminSession =  adminSession.findByUuid(key);
 		
-		if(!validAdminSession.isPresent()) {
-			adminSession.delete(validAdminSession.get());
-			return validAdminSession.get().getAdminId()+" Admin Logged Out !";
+		if(validAdminSession.isPresent()) {
+			CurrentAdminSession cas=validAdminSession.get();
+					adminSession.delete(cas);
+			return cas.getAdminId()+" Admin Logged Out Successfully !";
 		}
 		
-		throw new LoginException("Admin Not Logged In with this number");
+		throw new LoginException("Admin Not Logged In with this UUID");
 	}
 
 }

@@ -26,6 +26,8 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	
+	
 	@GetMapping("/welcome")
 	private ResponseEntity<String> welcomeAdmin(){
 		return new ResponseEntity<String>("Welcome",HttpStatus.OK);

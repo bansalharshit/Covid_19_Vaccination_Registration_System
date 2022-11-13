@@ -58,54 +58,54 @@ public class MemberController {
     	 
     	return new ResponseEntity<Member>(mem, HttpStatus.OK);
     }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Member> getMember(@PathVariable("id") Integer idCardId,@RequestParam String key) throws MemberException {
+//    	
+//    	Member mem = memberService.getMemberById(idCardId,key);
+//    	
+//    	 if(mem==null) {
+//    		 throw new MemberException("No Member Found!...");
+//    	 }
+//    	
+//        return new ResponseEntity<Member>(mem, HttpStatus.FOUND);
+//    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Member> getMember(@PathVariable("id") Integer idCardId,@RequestParam String key) throws MemberException {
-    	
-    	Member mem = memberService.getMemberById(idCardId,key);
-    	
-    	 if(mem==null) {
-    		 throw new MemberException("No Member Found!...");
-    	 }
-    	
-        return new ResponseEntity<Member>(mem, HttpStatus.FOUND);
-    }
+//    @GetMapping("/aadhar/{aadharNo}")
+//    public ResponseEntity<Member> getMemberByAadhar(@PathVariable("aadharNo") Long aadharNo,@RequestParam String key) throws MemberException {
+//    	
+//    	Member mem = memberService.getMemberByAdharNo(aadharNo,key);
+//    	
+//    	 if(mem==null) {
+//    		 throw new MemberException("No Member Found!...");
+//    	 }
+//    	
+//    	return new ResponseEntity<Member>(mem, HttpStatus.FOUND);
+//    }
 
-    @GetMapping("/aadhar/{aadharNo}")
-    public ResponseEntity<Member> getMemberByAadhar(@PathVariable("aadharNo") Long aadharNo,@RequestParam String key) throws MemberException {
-    	
-    	Member mem = memberService.getMemberByAdharNo(aadharNo,key);
-    	
-    	 if(mem==null) {
-    		 throw new MemberException("No Member Found!...");
-    	 }
-    	
-    	return new ResponseEntity<Member>(mem, HttpStatus.FOUND);
-    }
+//    @GetMapping("/pan/{panNo}")
+//    public ResponseEntity<Member> getMemberByPan(@PathVariable("panNo") String panNo,@RequestParam String key) throws MemberException {
+//        
+//    	Member mem = memberService.getMemberByPanNo(panNo,key);
+//    	
+//    	 if(mem==null) {
+//    		 throw new MemberException("No Member Found!...");
+//    	 }
+//    	
+//    	return new ResponseEntity<Member>(mem, HttpStatus.FOUND);
+//    }
 
-    @GetMapping("/pan/{panNo}")
-    public ResponseEntity<Member> getMemberByPan(@PathVariable("panNo") String panNo,@RequestParam String key) throws MemberException {
-        
-    	Member mem = memberService.getMemberByPanNo(panNo,key);
-    	
-    	 if(mem==null) {
-    		 throw new MemberException("No Member Found!...");
-    	 }
-    	
-    	return new ResponseEntity<Member>(mem, HttpStatus.FOUND);
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteMemberRecord(@RequestBody Member member,@RequestParam String key) throws MemberException {
-        
-    	boolean found = memberService.deleteMemberRecord(member,key);
-    	
-    	if(!found) {
-    		throw new MemberException("Member Not Found!...");
-    	}
-    	
-    	return new ResponseEntity<String>(found+" Memeber record deleted : ",HttpStatus.OK);
-    }
+//    @DeleteMapping("/delete")
+//    public ResponseEntity<String> deleteMemberRecord(@RequestBody Member member,@RequestParam String key) throws MemberException {
+//        
+//    	boolean found = memberService.deleteMemberRecord(member,key);
+//    	
+//    	if(!found) {
+//    		throw new MemberException("Member Not Found!...");
+//    	}
+//    	
+//    	return new ResponseEntity<String>(found+" Memeber record deleted : ",HttpStatus.OK);
+//    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Member> updateMember(@RequestBody Member member, @PathVariable("id") Integer mId,@RequestParam String key) throws MemberException {
