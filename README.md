@@ -16,11 +16,11 @@
   <p align="center">
     We tried to mimic real world Covid-19 module. And designe according to that.
     <br />
-    <a href="https://github.com/nileshs23/dear-shade-414"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/bansalharshit/boorish-floor-4212"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     .
-    <a href="https://fantastic-queijadas-e98c0f.netlify.app//">View Demo</a>
+    <a href="https://github.com/bansalharshit/boorish-floor-4212">View Demo</a>
     .
   </p>
 </div>
