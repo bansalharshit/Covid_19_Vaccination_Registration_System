@@ -58,8 +58,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-
-![image](https://user-images.githubusercontent.com/101393035/201487101-05137398-5979-4716-ab79-6c3909350f92.png)
+![er d3](https://user-images.githubusercontent.com/53571060/201828594-8bd441fd-1f13-4173-813e-8cf6b0855d36.png)
 
 
 This application will facilitate the citizen with an option to register and schedule the vaccination session online in Centers of their choice. The Citizen self-registration module will ensure fool-proof identification of deserving candidates for receiving the vaccines.
